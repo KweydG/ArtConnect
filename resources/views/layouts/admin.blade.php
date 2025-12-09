@@ -7,50 +7,444 @@
 
     <title>Admin - {{ config('app.name', 'ArtConnect') }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+    <!-- Graffiti Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@700&family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        body { font-family: 'Figtree', sans-serif; background-color: #f1f5f9; }
-        .sidebar { width: 250px; background: #1e293b; min-height: 100vh; }
-        .sidebar-link { display: flex; align-items: center; padding: 0.75rem 1rem; color: #94a3b8; transition: all 0.2s; }
-        .sidebar-link:hover, .sidebar-link.active { background: #334155; color: white; }
-        .sidebar-link svg { width: 20px; height: 20px; margin-right: 0.75rem; }
-        .stat-card { background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .table { width: 100%; border-collapse: collapse; }
-        .table th, .table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
-        .table th { background: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.875rem; }
-        .table tr:hover { background: #f8fafc; }
-        .btn { padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: all 0.2s; }
-        .btn-primary { background: #6366f1; color: white; }
-        .btn-primary:hover { background: #4f46e5; }
-        .btn-danger { background: #ef4444; color: white; }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-success { background: #10b981; color: white; }
-        .btn-success:hover { background: #059669; }
-        .btn-secondary { background: #e2e8f0; color: #475569; }
-        .btn-secondary:hover { background: #cbd5e1; }
-        .form-group { margin-bottom: 1rem; }
-        .form-label { display: block; font-weight: 500; color: #374151; margin-bottom: 0.5rem; }
-        .form-input { width: 100%; padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; }
-        .form-input:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
-        .badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
-        .badge-admin { background: #fef3c7; color: #d97706; }
-        .badge-user { background: #dbeafe; color: #2563eb; }
-        .alert { padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
-        .alert-success { background: #d1fae5; color: #065f46; }
-        .alert-error { background: #fee2e2; color: #991b1b; }
+        :root {
+            --graffiti-pink: #FF006E;
+            --graffiti-yellow: #FFBE0B;
+            --graffiti-cyan: #00F5FF;
+            --graffiti-orange: #FF6B35;
+            --graffiti-purple: #8338EC;
+            --graffiti-green: #06FFA5;
+            --dark-bg: #1a1a2e;
+            --paper-bg: #f5f3ee;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--paper-bg);
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(255, 190, 11, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(0, 245, 255, 0.08) 0%, transparent 50%);
+        }
+
+        /* Sidebar */
+        .sidebar { 
+            width: 280px; 
+            background: var(--dark-bg);
+            min-height: 100vh;
+            border-right: 6px solid #000;
+            box-shadow: 8px 0 16px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -6px;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                var(--graffiti-pink) 0%, 
+                var(--graffiti-orange) 20%,
+                var(--graffiti-yellow) 40%, 
+                var(--graffiti-green) 60%,
+                var(--graffiti-cyan) 80%, 
+                var(--graffiti-purple) 100%
+            );
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 3px dashed rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .admin-logo {
+            font-family: 'Bangers', cursive;
+            font-size: 28px;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--graffiti-cyan), var(--graffiti-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-block;
+            filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.3));
+        }
+
+        .admin-badge {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 10px;
+            background: var(--graffiti-yellow);
+            color: var(--dark-bg);
+            padding: 4px 8px;
+            border-radius: 12px;
+            border: 2px solid #000;
+            margin-left: 8px;
+            display: inline-block;
+            transform: rotate(-3deg);
+        }
+
+        .sidebar-link { 
+            display: flex; 
+            align-items: center; 
+            padding: 14px 20px; 
+            color: #94a3b8;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .sidebar-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 70%;
+            background: var(--graffiti-cyan);
+            transition: width 0.3s;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--graffiti-cyan);
+            transform: translateX(4px);
+        }
+
+        .sidebar-link:hover::before {
+            width: 5px;
+        }
+
+        .sidebar-link.active { 
+            background: rgba(0, 245, 255, 0.15);
+            color: var(--graffiti-cyan);
+            border-left: 5px solid var(--graffiti-cyan);
+        }
+
+        .sidebar-link.active::after {
+            content: '●';
+            position: absolute;
+            right: 20px;
+            color: var(--graffiti-cyan);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .sidebar-link svg { 
+            width: 22px; 
+            height: 22px; 
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-divider {
+            margin: 16px 20px;
+            border-top: 2px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            border-bottom: 4px solid #000;
+            padding: 20px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .top-bar::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                var(--graffiti-pink) 0%, 
+                var(--graffiti-yellow) 25%, 
+                var(--graffiti-cyan) 50%, 
+                var(--graffiti-purple) 75%, 
+                var(--graffiti-green) 100%
+            );
+        }
+
+        .page-title {
+            font-family: 'Bangers', cursive;
+            font-size: 32px;
+            letter-spacing: 2px;
+            color: var(--dark-bg);
+            text-transform: uppercase;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-family: 'Permanent Marker', cursive;
+            color: var(--dark-bg);
+            font-size: 16px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Stat Cards */
+        .stat-card { 
+            background: white;
+            border: 4px solid #000;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Tables */
+        .table { 
+            width: 100%; 
+            border-collapse: collapse;
+            background: white;
+            border: 4px solid #000;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .table th, .table td { 
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 2px solid #e5e5e5;
+        }
+
+        .table th { 
+            background: var(--paper-bg);
+            font-family: 'Permanent Marker', cursive;
+            font-size: 14px;
+            color: var(--dark-bg);
+            border-bottom: 3px solid #000;
+        }
+
+        .table tr:hover { 
+            background: var(--paper-bg);
+            transform: translateX(2px);
+        }
+
+        .table tr {
+            transition: all 0.2s;
+        }
+
+        /* Buttons */
+        .btn { 
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid #000;
+            font-family: 'Permanent Marker', cursive;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary { background: var(--graffiti-cyan); color: var(--dark-bg); }
+        .btn-danger { background: var(--graffiti-pink); color: white; }
+        .btn-success { background: var(--graffiti-green); color: var(--dark-bg); }
+        .btn-secondary { background: white; color: var(--dark-bg); }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+
+        /* Forms */
+        .form-group { 
+            margin-bottom: 20px;
+        }
+
+        .form-label { 
+            display: block;
+            font-family: 'Permanent Marker', cursive;
+            color: var(--dark-bg);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input { 
+            width: 100%;
+            padding: 12px 16px;
+            border: 3px solid #000;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-input:focus { 
+            outline: none;
+            border-color: var(--graffiti-purple);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Badges */
+        .badge { 
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            font-family: 'Permanent Marker', cursive;
+            border: 2px solid #000;
+            display: inline-block;
+            transform: rotate(-2deg);
+        }
+
+        .badge-admin { background: var(--graffiti-yellow); color: var(--dark-bg); }
+        .badge-user { background: var(--graffiti-cyan); color: var(--dark-bg); }
+
+        /* Alerts */
+        .alert { 
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 3px solid #000;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-success { 
+            background: var(--graffiti-green);
+            color: var(--dark-bg);
+        }
+
+        .alert-success::before {
+            content: '✓';
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .alert-error { 
+            background: var(--graffiti-pink);
+            color: white;
+        }
+
+        .alert-error::before {
+            content: '⚠';
+            font-size: 24px;
+        }
+
+        /* Decorative Elements */
+        .spray-dot {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #000;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dot-1 {
+            top: 15%;
+            right: 10%;
+            background: var(--graffiti-pink);
+            animation: float1 8s ease-in-out infinite;
+        }
+
+        .dot-2 {
+            top: 60%;
+            right: 5%;
+            background: var(--graffiti-yellow);
+            animation: float2 10s ease-in-out infinite;
+        }
+
+        .dot-3 {
+            top: 40%;
+            right: 20%;
+            background: var(--graffiti-cyan);
+            animation: float3 7s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(15px) translateX(-10px); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(180deg); }
+        }
+
+        @yield('head')
     </style>
 </head>
 <body class="flex">
+    <!-- Decorative Dots -->
+    <div class="spray-dot dot-1"></div>
+    <div class="spray-dot dot-2"></div>
+    <div class="spray-dot dot-3"></div>
+
     <!-- Sidebar -->
-    <aside class="sidebar fixed left-0 top-0 h-full">
-        <div class="p-4 border-b border-gray-700">
-            <a href="{{ route('admin.dashboard') }}" class="text-white font-bold text-xl">ArtConnect Admin</a>
+    <aside class="sidebar fixed left-0 top-0 h-full z-50">
+        <div class="sidebar-header">
+            <a href="{{ route('admin.dashboard') }}" class="admin-logo">
+                ArtConnect
+                <span class="admin-badge">ADMIN</span>
+            </a>
         </div>
 
         <nav class="mt-4">
@@ -79,7 +473,7 @@
                 Tutorials
             </a>
 
-            <hr class="my-4 border-gray-700">
+            <hr class="sidebar-divider">
 
             <a href="{{ route('home') }}" class="sidebar-link">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
@@ -88,7 +482,7 @@
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="sidebar-link w-full text-left">
+                <button type="submit" class="sidebar-link w-full text-left border-0 bg-transparent">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                     Logout
                 </button>
@@ -97,18 +491,18 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="ml-[250px] flex-1 min-h-screen">
+    <main class="ml-[280px] flex-1 min-h-screen" style="position: relative; z-index: 1;">
         <!-- Top Bar -->
-        <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-semibold text-gray-800">@yield('title', 'Dashboard')</h1>
-            <div class="flex items-center space-x-4">
-                <span class="text-gray-600">Welcome, {{ auth()->user()->name }}</span>
-                <img src="{{ auth()->user()->avatar_url }}" alt="" class="w-8 h-8 rounded-full">
+        <header class="top-bar">
+            <h1 class="page-title">@yield('title', 'Dashboard')</h1>
+            <div class="user-info">
+                <span class="user-name">{{ auth()->user()->name }}</span>
+                <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="user-avatar">
             </div>
         </header>
 
         <!-- Page Content -->
-        <div class="p-6">
+        <div class="p-8">
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
@@ -120,5 +514,7 @@
             @yield('content')
         </div>
     </main>
+
+    @stack('scripts')
 </body>
 </html>

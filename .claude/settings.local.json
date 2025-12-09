@@ -11,7 +11,9 @@
       "Bash(git add:*)",
       "Bash(git remote:*)",
       "Bash(git remote add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(mysql:*)",
+      "Bash(\"C:\\xampp\\mysql\\bin\\mysql.exe\" -u root -e \"CREATE DATABASE IF NOT EXISTS group10_finals;\")"
     ],
     "deny": [],
     "ask": []

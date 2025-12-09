@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Manage Tutorials')
+@section('title', 'Manage Users')
 
 @section('head')
 <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@700&family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
         left: 0;
         width: 100%;
         height: 6px;
-        background: var(--graffiti-purple);
+        background: var(--graffiti-cyan);
         transform: skew(-12deg);
         border: 2px solid #000;
     }
@@ -249,8 +249,8 @@
         font-size: 14px;
     }
 
-    /* Difficulty Badge */
-    .difficulty-badge {
+    /* Role Badge */
+    .role-badge {
         font-family: 'Permanent Marker', cursive;
         font-size: 12px;
         padding: 4px 12px;
@@ -260,19 +260,14 @@
         transform: rotate(-1deg);
     }
 
-    .difficulty-badge.beginner {
+    .role-badge.admin {
+        background: var(--graffiti-purple);
+        color: white;
+    }
+
+    .role-badge.user {
         background: var(--graffiti-green);
         color: var(--dark-bg);
-    }
-
-    .difficulty-badge.intermediate {
-        background: var(--graffiti-yellow);
-        color: var(--dark-bg);
-    }
-
-    .difficulty-badge.advanced {
-        background: var(--graffiti-orange);
-        color: white;
     }
 
     /* Action Buttons */
@@ -427,24 +422,24 @@
 <div class="relative">
     <!-- Decorative Sticker -->
     <div class="sticker" style="top: 20px; right: 3%; animation-delay: -1s;">
-        📚
+        👥
     </div>
 
     <!-- Page Title -->
-    <h1 class="page-title mb-8 fade-in">Manage Tutorials</h1>
+    <h1 class="page-title mb-8 fade-in">Manage Users</h1>
 
     <!-- Header Section -->
     <div class="header-section fade-in">
         <div class="toggle-container">
-            <a href="{{ route('admin.tutorials.index') }}" class="toggle-btn {{ !request('trashed') ? 'active' : 'inactive' }}">
+            <a href="{{ route('admin.users.index') }}" class="toggle-btn {{ !request('trashed') ? 'active' : 'inactive' }}">
                 ✅ Active
             </a>
-            <a href="{{ route('admin.tutorials.index', ['trashed' => true]) }}" class="toggle-btn {{ request('trashed') ? 'active' : 'inactive' }}">
+            <a href="{{ route('admin.users.index', ['trashed' => true]) }}" class="toggle-btn {{ request('trashed') ? 'active' : 'inactive' }}">
                 🗑️ Trashed
             </a>
         </div>
-        <a href="{{ route('admin.tutorials.create') }}" class="btn-add">
-            + Add Tutorial
+        <a href="{{ route('admin.users.create') }}" class="btn-add">
+            + Add User
         </a>
     </div>
 
@@ -455,26 +450,16 @@
                 <input type="hidden" name="trashed" value="1">
             @endif
 
-            <input type="text" 
-                   name="search" 
-                   value="{{ request('search') }}" 
-                   placeholder="🔍 Search tutorials..."
+            <input type="text"
+                   name="search"
+                   value="{{ request('search') }}"
+                   placeholder="🔍 Search users..."
                    class="graffiti-input flex-1 min-w-[200px]">
 
-            <select name="category" class="graffiti-select">
-                <option value="">📂 All Categories</option>
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
-
-            <select name="difficulty" class="graffiti-select">
-                <option value="">📊 All Levels</option>
-                <option value="beginner" {{ request('difficulty') == 'beginner' ? 'selected' : '' }}>🟢 Beginner</option>
-                <option value="intermediate" {{ request('difficulty') == 'intermediate' ? 'selected' : '' }}>🟡 Intermediate</option>
-                <option value="advanced" {{ request('difficulty') == 'advanced' ? 'selected' : '' }}>🔴 Advanced</option>
+            <select name="role" class="graffiti-select">
+                <option value="">👤 All Roles</option>
+                <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>👑 Admin</option>
+                <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>🎨 User</option>
             </select>
 
             <button type="submit" class="btn-filter">
@@ -488,62 +473,62 @@
         <table class="graffiti-table">
             <thead>
                 <tr>
-                    <th>📖 Tutorial</th>
-                    <th>👤 Author</th>
-                    <th>📂 Category</th>
-                    <th>📊 Difficulty</th>
-                    <th>👁️ Views</th>
+                    <th>👤 User</th>
+                    <th>📧 Email</th>
+                    <th>🎭 Role</th>
+                    <th>🎨 Artworks</th>
+                    <th>💬 Comments</th>
                     <th>⚙️ Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($tutorials as $tutorial)
+                @forelse($users as $user)
                     <tr>
-                        <td class="doodle-text text-sm">{{ $tutorial->title }}</td>
-                        <td class="handwritten text-lg">{{ $tutorial->user->name }}</td>
-                        <td class="handwritten text-lg">{{ $tutorial->category->name }}</td>
+                        <td class="doodle-text text-sm">{{ $user->name }}</td>
+                        <td class="handwritten text-lg">{{ $user->email }}</td>
                         <td>
-                            <span class="difficulty-badge {{ $tutorial->difficulty }}">
-                                @if($tutorial->difficulty == 'beginner')
-                                    🟢 Beginner
-                                @elseif($tutorial->difficulty == 'intermediate')
-                                    🟡 Intermediate
+                            <span class="role-badge {{ $user->role }}">
+                                @if($user->role == 'admin')
+                                    👑 Admin
                                 @else
-                                    🔴 Advanced
+                                    🎨 User
                                 @endif
                             </span>
                         </td>
-                        <td class="doodle-text text-sm">{{ $tutorial->views }}</td>
+                        <td class="doodle-text text-sm">{{ $user->artworks_count }}</td>
+                        <td class="doodle-text text-sm">{{ $user->comments_count }}</td>
                         <td>
                             @if(request('trashed'))
-                                <form method="POST" action="{{ route('admin.tutorials.restore', $tutorial->id) }}" class="inline">
+                                <form method="POST" action="{{ route('admin.users.restore', $user->id) }}" class="inline">
                                     @csrf
                                     <button type="submit" class="btn-action btn-restore">
                                         ↩️ Restore
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ route('admin.tutorials.force-delete', $tutorial->id) }}" class="inline">
+                                <form method="POST" action="{{ route('admin.users.force-delete', $user->id) }}" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
-                                            class="btn-action btn-forever" 
-                                            onclick="return confirm('⚠️ Permanently delete this tutorial? This cannot be undone!')">
+                                    <button type="submit"
+                                            class="btn-action btn-forever"
+                                            onclick="return confirm('⚠️ Permanently delete this user? This cannot be undone!')">
                                         🔥 Delete Forever
                                     </button>
                                 </form>
                             @else
-                                <a href="{{ route('admin.tutorials.edit', $tutorial) }}" class="btn-action btn-edit">
+                                <a href="{{ route('admin.users.edit', $user) }}" class="btn-action btn-edit">
                                     ✏️ Edit
                                 </a>
-                                <form method="POST" action="{{ route('admin.tutorials.destroy', $tutorial) }}" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            class="btn-action btn-delete" 
-                                            onclick="return confirm('🗑️ Move this tutorial to trash?')">
-                                        🗑️ Delete
-                                    </button>
-                                </form>
+                                @if($user->id !== auth()->id())
+                                    <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="btn-action btn-delete"
+                                                onclick="return confirm('🗑️ Move this user to trash?')">
+                                            🗑️ Delete
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
                         </td>
                     </tr>
@@ -551,16 +536,16 @@
                     <tr>
                         <td colspan="6" class="empty-state">
                             <svg class="w-24 h-24 mx-auto mb-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
-                            <h3 class="empty-title">No Tutorials Found</h3>
+                            <h3 class="empty-title">No Users Found</h3>
                             <p class="handwritten text-2xl text-gray-600">
-                                @if(request('search') || request('category') || request('difficulty'))
+                                @if(request('search') || request('role'))
                                     Try adjusting your filters
                                 @elseif(request('trashed'))
-                                    No trashed tutorials
+                                    No trashed users
                                 @else
-                                    No tutorials yet
+                                    No users yet
                                 @endif
                             </p>
                         </td>
@@ -571,9 +556,9 @@
     </div>
 
     <!-- Pagination -->
-    @if($tutorials->hasPages())
+    @if($users->hasPages())
         <div class="pagination fade-in delay-2">
-            {{ $tutorials->links() }}
+            {{ $users->links() }}
         </div>
     @endif
 </div>

@@ -53,16 +53,16 @@ class ArtworkController extends Controller
         // Handle image upload
         $imagePath = $request->file('image')->store('artworks', 'public');
 
-        // Parse tags
+        // Parse tags (comma-separated string -> array)
         $tags = $validated['tags'] ?? '';
-        $tagsArray = array_filter(array_map('trim', explode(',', $tags)));
+        $tagsArray = array_values(array_filter(array_map('trim', explode(',', $tags))));
 
         $artwork = auth()->user()->artworks()->create([
             'title' => $validated['title'],
-            'description' => $validated['description'],
+            'description' => $validated['description'] ?? null,
             'category_id' => $validated['category_id'],
             'image' => $imagePath,
-            'medium' => $validated['medium'],
+            'medium' => $validated['medium'] ?? null,
             'tags' => $tagsArray,
         ]);
 
@@ -118,16 +118,20 @@ class ArtworkController extends Controller
 
         // Handle image upload if new image provided
         if ($request->hasFile('image')) {
-            // Delete old image
             if ($artwork->image) {
                 Storage::disk('public')->delete($artwork->image);
             }
+
             $validated['image'] = $request->file('image')->store('artworks', 'public');
         }
 
         // Parse tags
         $tags = $validated['tags'] ?? '';
-        $validated['tags'] = array_filter(array_map('trim', explode(',', $tags)));
+        $validated['tags'] = array_values(array_filter(array_map('trim', explode(',', $tags))));
+
+        // Ensure nullable fields don't cause undefined index issues
+        $validated['description'] = $validated['description'] ?? null;
+        $validated['medium'] = $validated['medium'] ?? null;
 
         $artwork->update($validated);
 

@@ -523,7 +523,7 @@
                     <tr>
                         <td class="doodle-text text-sm">{{ $comment->user->name }}</td>
                         <td class="handwritten text-base">{{ Str::limit($comment->content, 60) }}</td>
-                        <td class="handwritten text-base">{{ $comment->artwork->title }}</td>
+                        <td class="handwritten text-base">{{ $comment->artwork?->title ?? 'Deleted Artwork' }}</td>
                         <td class="handwritten text-base text-gray-600">{{ $comment->created_at->diffForHumans() }}</td>
                     </tr>
                 @endforeach
