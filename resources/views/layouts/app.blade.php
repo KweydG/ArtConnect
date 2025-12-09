@@ -7,164 +7,438 @@
 
     <title>{{ config('app.name', 'ArtConnect') }} - @yield('title', 'Creative Community')</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
+    <!-- Graffiti Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat:wght@700&family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --accent: #f59e0b;
+            --graffiti-pink: #FF006E;
+            --graffiti-yellow: #FFBE0B;
+            --graffiti-cyan: #00F5FF;
+            --graffiti-orange: #FF6B35;
+            --graffiti-purple: #8338EC;
+            --graffiti-green: #06FFA5;
+            --dark-bg: #1a1a2e;
+            --paper-bg: #f5f3ee;
         }
 
         body {
-            font-family: 'Figtree', sans-serif;
-            background-color: #f8fafc;
+            font-family: 'Poppins', sans-serif;
+            background: var(--paper-bg);
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255, 190, 11, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 245, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 0, 110, 0.05) 0%, transparent 50%);
         }
 
+        /* Navigation Bar */
+        .navbar {
+            background: white;
+            border-bottom: 4px solid #000;
+            box-shadow: 0 8px 0px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-text {
+            font-family: 'Bangers', cursive;
+            font-size: 28px;
+            letter-spacing: 2px;
+            color: var(--dark-bg);
+            text-transform: uppercase;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--graffiti-pink), var(--graffiti-purple));
+            border: 3px solid #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Custom spacing for navigation */
+        .nav-spacer {
+            margin-left: 6rem; /* 96px spacing between logo and nav */
+        }
+
+        .nav-link {
+            font-family: 'Permanent Marker', cursive;
+            color: #64748b;
+            font-size: 15px;
+            transition: all 0.3s;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--graffiti-pink);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--graffiti-pink);
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Buttons */
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            font-family: 'Permanent Marker', cursive;
+            background: var(--graffiti-pink);
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.2);
             cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
         }
 
         .btn-secondary {
+            font-family: 'Permanent Marker', cursive;
             background: white;
-            color: var(--primary);
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 2px solid var(--primary);
+            color: var(--dark-bg);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
             cursor: pointer;
         }
 
         .btn-secondary:hover {
-            background: var(--primary);
-            color: white;
+            background: var(--graffiti-cyan);
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
         }
 
+        /* User Dropdown */
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #000;
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .avatar:hover {
+            transform: rotate(-5deg) scale(1.05);
+        }
+
+        .dropdown-menu {
+            background: white;
+            border: 3px solid #000;
+            border-radius: 12px;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .dropdown-item {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            padding: 12px 16px;
+            transition: all 0.2s;
+            display: block;
+            color: #334155;
+        }
+
+        .dropdown-item:hover {
+            background: var(--graffiti-yellow);
+            transform: translateX(4px);
+        }
+
+        .dropdown-item.admin {
+            color: var(--graffiti-purple);
+            font-family: 'Permanent Marker', cursive;
+        }
+
+        .dropdown-item.logout {
+            color: var(--graffiti-pink);
+        }
+
+        /* Cards */
         .card {
             background: white;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 3px solid #000;
+            border-radius: 8px;
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.15);
         }
 
-        .navbar {
-            background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-link {
-            color: #64748b;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: var(--primary);
-        }
-
-        .badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
+        /* Flash Messages */
+        .alert {
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 3px solid #000;
+            font-family: 'Poppins', sans-serif;
             font-weight: 600;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.5s ease-out;
         }
 
-        .badge-primary { background: #e0e7ff; color: var(--primary); }
-        .badge-green { background: #d1fae5; color: #059669; }
-        .badge-yellow { background: #fef3c7; color: #d97706; }
-        .badge-red { background: #fee2e2; color: #dc2626; }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
+        .alert-success {
+            background: var(--graffiti-green);
+            color: var(--dark-bg);
+        }
+
+        .alert-error {
+            background: var(--graffiti-pink);
+            color: white;
+        }
+
+        .alert::before {
+            content: '✓';
+            font-size: 24px;
+            margin-right: 12px;
+            font-weight: bold;
+        }
+
+        .alert-error::before {
+            content: '⚠';
+        }
+
+        /* Badges */
+        .badge {
+            font-family: 'Permanent Marker', cursive;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            border: 2px solid #000;
+            display: inline-block;
+            transform: rotate(-1deg);
+        }
+
+        .badge-primary { background: var(--graffiti-cyan); color: var(--dark-bg); }
+        .badge-green { background: var(--graffiti-green); color: var(--dark-bg); }
+        .badge-yellow { background: var(--graffiti-yellow); color: var(--dark-bg); }
+        .badge-red { background: var(--graffiti-pink); color: white; }
+
+        /* Form Inputs */
         .form-input {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.5rem;
-            transition: border-color 0.2s ease;
+            padding: 12px 16px;
+            border: 3px solid #000;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
         }
 
         .form-input:focus {
             outline: none;
-            border-color: var(--primary);
+            border-color: var(--graffiti-purple);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.2);
         }
 
-        .alert {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            border-top: 4px solid #000;
+            margin-top: 80px;
+            position: relative;
         }
 
-        .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-        .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                var(--graffiti-pink) 0%, 
+                var(--graffiti-yellow) 25%, 
+                var(--graffiti-cyan) 50%, 
+                var(--graffiti-purple) 75%, 
+                var(--graffiti-green) 100%
+            );
+        }
 
+        .footer-title {
+            font-family: 'Bangers', cursive;
+            font-size: 24px;
+            letter-spacing: 2px;
+            color: white;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .footer-heading {
+            font-family: 'Permanent Marker', cursive;
+            color: var(--graffiti-yellow);
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .footer-link {
+            color: #94a3b8;
+            transition: all 0.2s;
+            display: block;
+            padding: 4px 0;
+        }
+
+        .footer-link:hover {
+            color: var(--graffiti-cyan);
+            transform: translateX(4px);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-btn {
+            display: none;
+            background: var(--graffiti-yellow);
+            border: 3px solid #000;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .desktop-nav {
+                display: none;
+            }
+
+            .logo-text {
+                font-size: 24px;
+            }
+
+            .nav-spacer {
+                margin-left: 2rem; /* Reduced spacing on mobile */
+            }
+        }
+
+        /* Artwork Grid */
         .artwork-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            gap: 24px;
         }
 
-        .artwork-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
+        /* Decorative Elements */
+        .spray-blob {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 0;
         }
 
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
+        .spray-blob-1 {
+            top: 10%;
+            left: 5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--graffiti-pink) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
         }
 
-        .avatar-lg {
-            width: 100px;
-            height: 100px;
+        .spray-blob-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--graffiti-cyan) 0%, transparent 70%);
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
         }
     </style>
 
-    <!-- ADD THIS LINE - allows @yield('head') to work -->
     @yield('head')
-    
     @stack('styles')
 </head>
 <body>
+    <!-- Decorative Spray Blobs -->
+    <div class="spray-blob spray-blob-1"></div>
+    <div class="spray-blob spray-blob-2"></div>
+
     <!-- Navigation -->
-    <nav class="navbar sticky top-0 z-50">
+    <nav class="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                        <svg class="w-8 h-8 text-indigo-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                        <span class="text-xl font-bold text-gray-900">ArtConnect</span>
+                    <a href="{{ route('home') }}" class="flex items-center gap-3">
+                        <div class="logo-icon">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <span class="logo-text">ArtConnect</span>
                     </a>
 
-                    <div class="hidden md:flex ml-10 space-x-8">
+                    <!-- Desktop Navigation - MAXIMUM SPACING VERSION -->
+                    <div class="hidden md:flex gap-8 desktop-nav nav-spacer">
                         <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
                         <a href="{{ route('explore') }}" class="nav-link {{ request()->routeIs('explore') ? 'active' : '' }}">Explore</a>
                         <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">Categories</a>
@@ -173,30 +447,38 @@
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-4">
+                <!-- Right Side -->
+                <div class="flex items-center gap-4">
                     @auth
-                        <a href="{{ route('artworks.create') }}" class="btn-primary text-sm">
-                            + Upload Art
+                        <a href="{{ route('artworks.create') }}" class="btn-primary text-sm hidden sm:inline-block">
+                            + Upload
                         </a>
 
+                        <!-- User Dropdown -->
                         <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center space-x-2">
+                            <button @click="open = !open" class="flex items-center gap-2">
                                 <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="avatar">
-                                <span class="hidden md:inline text-gray-700">{{ auth()->user()->name }}</span>
+                                <span class="hidden md:inline font-semibold" style="font-family: 'Permanent Marker', cursive; color: var(--dark-bg);">{{ Str::limit(auth()->user()->name, 12) }}</span>
                             </button>
 
-                            <div x-show="open" @click.away="open = false"
-                                 class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                                <a href="{{ route('artists.show', auth()->user()) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">My Profile</a>
-                                <a href="{{ route('collections.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">My Collections</a>
-                                <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
+                            <div x-show="open" 
+                                 @click.away="open = false"
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 transform scale-95"
+                                 x-transition:enter-end="opacity-100 transform scale-100"
+                                 class="absolute right-0 mt-3 w-56 dropdown-menu"
+                                 style="display: none;">
+                                <a href="{{ route('artists.show', auth()->user()) }}" class="dropdown-item">👤 My Profile</a>
+                                <a href="{{ route('collections.index') }}" class="dropdown-item">📁 My Collections</a>
+                                <a href="{{ route('profile.edit') }}" class="dropdown-item">⚙️ Settings</a>
                                 @if(auth()->user()->isAdmin())
-                                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-indigo-600 hover:bg-gray-100">Admin Panel</a>
+                                    <hr style="border-color: #000; margin: 8px 0;">
+                                    <a href="{{ route('admin.dashboard') }}" class="dropdown-item admin">⭐ Admin Panel</a>
                                 @endif
-                                <hr class="my-2">
+                                <hr style="border-color: #000; margin: 8px 0;">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
+                                    <button type="submit" class="dropdown-item logout w-full text-left">🚪 Logout</button>
                                 </form>
                             </div>
                         </div>
@@ -211,7 +493,7 @@
 
     <!-- Flash Messages -->
     @if(session('success'))
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
@@ -219,7 +501,7 @@
     @endif
 
     @if(session('error'))
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
             <div class="alert alert-error">
                 {{ session('error') }}
             </div>
@@ -227,46 +509,65 @@
     @endif
 
     <!-- Main Content -->
-    <main>
+    <main style="position: relative; z-index: 1;">
         @yield('content')
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 mt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- About -->
                 <div>
-                    <h3 class="text-white font-bold text-lg mb-4">ArtConnect</h3>
-                    <p class="text-sm">A creative community platform for artists to share, learn, and grow together.</p>
-                    <p class="text-sm mt-2">Supporting SDG 4 & SDG 11</p>
+                    <h3 class="footer-title">ArtConnect</h3>
+                    <p class="text-gray-400 leading-relaxed mb-4">
+                        A creative community platform for artists to share, learn, and grow together. 🎨
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="badge badge-green" style="transform: rotate(-3deg);">SDG 4</span>
+                        <span class="badge badge-yellow" style="transform: rotate(2deg);">SDG 11</span>
+                    </div>
                 </div>
+
+                <!-- Explore -->
                 <div>
-                    <h4 class="text-white font-semibold mb-4">Explore</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="{{ route('artworks.index') }}" class="hover:text-white">Artworks</a></li>
-                        <li><a href="{{ route('categories.index') }}" class="hover:text-white">Categories</a></li>
-                        <li><a href="{{ route('artists.index') }}" class="hover:text-white">Artists</a></li>
+                    <h4 class="footer-heading">Explore</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{{ route('artworks.index') }}" class="footer-link">→ Artworks</a></li>
+                        <li><a href="{{ route('categories.index') }}" class="footer-link">→ Categories</a></li>
+                        <li><a href="{{ route('artists.index') }}" class="footer-link">→ Artists</a></li>
+                        <li><a href="{{ route('explore') }}" class="footer-link">→ Discover</a></li>
                     </ul>
                 </div>
+
+                <!-- Learn -->
                 <div>
-                    <h4 class="text-white font-semibold mb-4">Learn</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="{{ route('tutorials.index') }}" class="hover:text-white">Tutorials</a></li>
-                        <li><a href="{{ route('tutorials.index', ['difficulty' => 'beginner']) }}" class="hover:text-white">Beginner</a></li>
-                        <li><a href="{{ route('tutorials.index', ['difficulty' => 'advanced']) }}" class="hover:text-white">Advanced</a></li>
+                    <h4 class="footer-heading">Learn</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{{ route('tutorials.index') }}" class="footer-link">→ All Tutorials</a></li>
+                        <li><a href="{{ route('tutorials.index', ['difficulty' => 'beginner']) }}" class="footer-link">→ Beginner</a></li>
+                        <li><a href="{{ route('tutorials.index', ['difficulty' => 'intermediate']) }}" class="footer-link">→ Intermediate</a></li>
+                        <li><a href="{{ route('tutorials.index', ['difficulty' => 'advanced']) }}" class="footer-link">→ Advanced</a></li>
                     </ul>
                 </div>
+
+                <!-- Community -->
                 <div>
-                    <h4 class="text-white font-semibold mb-4">Community</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover:text-white">About Us</a></li>
-                        <li><a href="#" class="hover:text-white">Contact</a></li>
-                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                    <h4 class="footer-heading">Community</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="footer-link">→ About Us</a></li>
+                        <li><a href="#" class="footer-link">→ Contact</a></li>
+                        <li><a href="#" class="footer-link">→ Guidelines</a></li>
+                        <li><a href="#" class="footer-link">→ Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-                <p>&copy; {{ date('Y') }} ArtConnect - Group 10 Finals Project. All rights reserved.</p>
+
+            <!-- Copyright -->
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-500" style="font-family: 'Caveat', cursive; font-size: 18px; font-weight: 700;">
+                    © {{ date('Y') }} ArtConnect - Group 10 Finals Project. Made with ❤️ & 🎨
+                </p>
             </div>
         </div>
     </footer>
