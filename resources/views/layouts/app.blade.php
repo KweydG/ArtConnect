@@ -146,6 +146,9 @@
         }
     </style>
 
+    <!-- ADD THIS LINE - allows @yield('head') to work -->
+    @yield('head')
+    
     @stack('styles')
 </head>
 <body>
